@@ -4,22 +4,41 @@ all <- read.csv("villes.csv",
                 encoding = "UTF-8",
                 header = TRUE,
                 stringsAsFactors = FALSE)
-all %>% select(c("Ozan", "X618", "X01190", "X93")) %>% 
-    rename("Name" = "Ozan", 
-           "Population" = "X618",
-           "CP" = "X01190",
-           "Density" = "X93") %>% 
-    filter(Population < 800 
-           & Population > 100
-           & Density < 80) -> villages
+all %>% select(c("X01", "Ozan", "X618", "X01190", "X93")) %>% 
+    rename("code" = "X01",
+           "town.name" = "Ozan", 
+           "population" = "X618",
+           "cp" = "X01190",
+           "density" = "X93") %>% 
+    filter(population < 800 
+           & population > 100
+           & density < 80) -> villages
 rm(all)
+read.csv("départements.csv", 
+         encoding = "UTF-8",
+         header = FALSE,
+         stringsAsFactors = FALSE) %>% 
+    select(c("V2","V3")) %>% 
+    rename("code" = "V2",
+           "departement.name" = "V3") -> departements
+dplyr::left_join(villages, departements, by = "code") -> villages
+rm(departements)
 
-# create Overpass query
-
-queries <- c()
-for (i in villages$Name) {
-    queries[i] <- paste('[out:json][timeout:25];{{geocodeArea:',
-                        i,
-                        '}}->.searchArea;(way["highway"](area.searchArea);-way["highway"~"motorway|motorway_link|trunk|trunk_link"](area.searchArea););out body;>;out skel qt;',
+httpqueries <- c()
+for (i in (1:nrow(villages))) {
+    queries[i] <- paste('http://overpass-api.de/api/interpreter?data=[out:json];area[name="',
+                        villages$departement.name[i],
+                        '"]->.b;rel(area.b)[name="',
+                        villages$town.name[i],
+                        '"];map_to_area -> .a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
                         sep = "")
-    }
+}
+
+cat(queries[2])
+
+# create curl queries (by batches?)
+
+
+#sink
+#source
+#dump
