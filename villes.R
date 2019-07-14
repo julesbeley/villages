@@ -36,11 +36,29 @@ for (i in (1:nrow(villages))) {
 
 textqueries <- paste(httpqueries, collapse = "\n")
 
-sink(file = "URLs.txt")
+sink(file = "allurls.txt")
 cat(textqueries)
 sink()
 
-'wget "cat(httpquery)" -O [town.name].json' # list of URLs in text file option
+test <- paste(httpqueries[1:20], collapse = "\n")
+
+sink(file = "testurls.txt")
+cat(test)
+sink()
+
+
+# wget -i ./testurls.txt -O test.json # overwrites
+
+# utf-8 file names? queries? is that OK?
+
+
+# set i=0
+# for /f "delims=" %u in (testurls.txt) do curl %u -o bob%i%.json -g & set /a i=%i%+1
+# C:\Users\jules\Documents\Villages>for /f "delims=" %u in (testurls.txt) do (curl %u -o bob%i%.json -g & set /a i=%i%+1)
+
+# for /f "delims=" %u in (testurls.txt) do curl %u -o bob.json -g 
+
+# find variable 
 
 #https://stackoverflow.com/questions/9865866/pipe-output-of-cat-to-curl-to-download-a-list-of-files
 # https://builtvisible.com/download-your-website-with-wget/
