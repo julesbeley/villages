@@ -26,19 +26,22 @@ rm(departements)
 
 httpqueries <- c()
 for (i in (1:nrow(villages))) {
-    queries[i] <- paste('http://overpass-api.de/api/interpreter?data=[out:json];area[name="',
+    httpqueries[i] <- paste('http://overpass-api.de/api/interpreter?data=[out:json];area[name="',
                         villages$departement.name[i],
                         '"]->.b;rel(area.b)[name="',
                         villages$town.name[i],
-                        '"];map_to_area -> .a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
+                        '"];map_to_area->.a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
                         sep = "")
 }
 
-cat(queries[2])
+textqueries <- paste(httpqueries, collapse = "\n")
 
-# create curl queries (by batches?)
+sink(file = "URLs.txt")
+cat(textqueries)
+sink()
 
+'wget "cat(httpquery)" -O [town.name].json' # list of URLs in text file option
 
-#sink
-#source
-#dump
+#https://stackoverflow.com/questions/9865866/pipe-output-of-cat-to-curl-to-download-a-list-of-files
+# https://builtvisible.com/download-your-website-with-wget/
+# https://gist.github.com/oeon/3035152
