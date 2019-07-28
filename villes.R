@@ -51,11 +51,26 @@ sink()
 
 # utf-8 file names? queries? is that OK?
 
+# for /l %r in (1 1 10) do echo %r
+
+
+# SOLUTION!!!!!!!!!!!!!!!!!!
+
+# set /a "i=0"
+# for /l %r in (1 1 3) do set /a "i+=1" & echo bob
+
+# !!!!!!!!!!!!!!!!!!!!!!
+
 
 # set i=0
 # for /f "delims=" %u in (testurls.txt) do curl %u -o bob%i%.json -g & set /a i=%i%+1
-# C:\Users\jules\Documents\Villages>for /f "delims=" %u in (testurls.txt) do (curl %u -o bob%i%.json -g & set /a i=%i%+1)
 
+# setlocal ENABLEDELAYEDEXPANSION
+# set i=0
+# C:\Users\jules\Documents\Villages>for /f "delims=" %u in (testurls.txt) do (curl %u -o bob%i%.json -g & set /a i=i+1)
+
+
+# for %r in (1,1,10) do set /a i=i+1
 # for /f "delims=" %u in (testurls.txt) do curl %u -o bob.json -g 
 
 # find variable 
