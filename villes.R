@@ -27,54 +27,26 @@ rm(departements)
 httpqueries <- c()
 for (i in (1:nrow(villages))) {
     httpqueries[i] <- paste('http://overpass-api.de/api/interpreter?data=[out:json];area[name="',
-                        villages$departement.name[i],
-                        '"]->.b;rel(area.b)[name="',
-                        villages$town.name[i],
-                        '"];map_to_area->.a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
-                        sep = "")
+                            villages$departement.name[i],
+                            '"]->.b;rel(area.b)[name="',
+                            villages$town.name[i],
+                            '"];map_to_area->.a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
+                            sep = "")
 }
 
+httpqueries <- sample(httpqueries, 200)
 textqueries <- paste(httpqueries, collapse = "\n")
 
-sink(file = "allurls.txt")
+all <- file("allurls.txt", open = "wt", encoding = "UTF-8")
+sink(file = all)
 cat(textqueries)
 sink()
+close(all)
 
 test <- paste(httpqueries[1:20], collapse = "\n")
 
-sink(file = "testurls.txt")
+testfile <- file("testurls.txt", open = "wt", encoding = "UTF-8")
+sink(file = testfile)
 cat(test)
 sink()
-
-
-# wget -i ./testurls.txt -O test.json # overwrites
-
-# utf-8 file names? queries? is that OK?
-
-# for /l %r in (1 1 10) do echo %r
-
-
-# SOLUTION!!!!!!!!!!!!!!!!!!
-
-# set /a "i=0"
-# for /l %r in (1 1 3) do set /a "i+=1" & echo bob
-
-# !!!!!!!!!!!!!!!!!!!!!!
-
-
-# set i=0
-# for /f "delims=" %u in (testurls.txt) do curl %u -o bob%i%.json -g & set /a i=%i%+1
-
-# setlocal ENABLEDELAYEDEXPANSION
-# set i=0
-# C:\Users\jules\Documents\Villages>for /f "delims=" %u in (testurls.txt) do (curl %u -o bob%i%.json -g & set /a i=i+1)
-
-
-# for %r in (1,1,10) do set /a i=i+1
-# for /f "delims=" %u in (testurls.txt) do curl %u -o bob.json -g 
-
-# find variable 
-
-#https://stackoverflow.com/questions/9865866/pipe-output-of-cat-to-curl-to-download-a-list-of-files
-# https://builtvisible.com/download-your-website-with-wget/
-# https://gist.github.com/oeon/3035152
+close(testfile)
