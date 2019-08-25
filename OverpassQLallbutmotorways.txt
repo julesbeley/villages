@@ -19,4 +19,4 @@ rel(area.b)[name="Plagne"];
 map_to_area -> .a;
 (way(area.a)["highway"];-
  way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);
-out;
+out; 

@@ -1,16 +1,19 @@
-# bash
 # set locale to C and encoding to ISO-8859-1 (Western European)
-l=0
-while IFS=$' \t\n\r' read -r p
-do 
-let l++
-curl "$p" -f -o "file$l.json" -g
-done<testurls.txt
+# sed -i 's/\r$//' curl.sh before running (dos2unix)
+cd data && {
+l=1
+while IFS=$' \t\n\r' read -r p; do 
+    curl --silent "$p" -f -o "file$l.json" -g
+    let l++
+    done<allurls.txt
 del=$(find . -name "file*.json" -size 338c -type f -printf '.' | wc -c)
-read -r -p "Delete $del empty files? [y/n]" response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
-then
-find . -name "file*.json" -size 338c -delete
+if [[ "$del" -gt "0" ]]; then
+    read -r -p "Delete $del empty files? [y/n] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+        find . -name "file*.json" -size 338c -delete
+    fi
+fi
 out=$(find . -name "file*.json" -type f -printf '.' | wc -c) 
 echo "There are $out files"
-fi
+find . -name "*.txt" -delete
+cd -;}

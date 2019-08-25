@@ -34,7 +34,7 @@ for (i in (1:nrow(villages))) {
                             sep = "")
 }
 
-httpqueries <- sample(httpqueries, 200)
+httpqueries <- sample(httpqueries, 1200)
 textqueries <- paste(httpqueries, collapse = "\n")
 
 all <- file("allurls.txt", open = "wt", encoding = "UTF-8")
@@ -44,9 +44,11 @@ sink()
 close(all)
 
 test <- paste(httpqueries[1:20], collapse = "\n")
-
 testfile <- file("testurls.txt", open = "wt", encoding = "UTF-8")
 sink(file = testfile)
 cat(test)
 sink()
 close(testfile)
+
+file.copy("allurls.txt", to = "c:/users/jules/documents/villages/data", overwrite = TRUE)
+file.copy("testurls.txt", to = "c:/users/jules/documents/villages/data", overwrite = TRUE)
