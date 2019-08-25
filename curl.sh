@@ -16,4 +16,5 @@ fi
 out=$(find . -name "file*.json" -type f -printf '.' | wc -c) 
 echo "There are $out files"
 find . -name "*.txt" -delete
+jq -s '[.[][]]' *.json > all.json
 cd -;}
