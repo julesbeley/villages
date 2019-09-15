@@ -30,7 +30,7 @@ for (i in (1:nrow(villages))) {
                             villages$departement.name[i],
                             '"]->.b;rel(area.b)[name="',
                             villages$town.name[i],
-                            '"];map_to_area->.a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out;',
+                            '"];map_to_area->.a;(way(area.a)["highway"];-way(area.a)["highway"~"motorway|motorway_link|trunk|trunk_link"];);out%20geom;',
                             sep = "")
 }
 

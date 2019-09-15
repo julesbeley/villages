@@ -1,7 +1,7 @@
 # set locale to C and encoding to ISO-8859-1 (Western European)
 # sed -i 's/\r$//' curl.sh before running (dos2unix)
 cd data && {
-l=1
+l=678
 while IFS=$' \t\n\r' read -r p; do 
     curl --silent "$p" -f -o "file$l.json" -g
     let l++
